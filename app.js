@@ -96,17 +96,17 @@ function initNavbarScrollEffect() {
 // Counter animations for statistics
 function initCounterAnimations() {
     const counters = [
-        { element: document.querySelector('.hero-stats .stat-number'), target: 1464, suffix: '' },
-        { element: document.querySelectorAll('.hero-stats .stat-number')[1], target: 55, suffix: 'K' },
-        { element: document.querySelectorAll('.hero-stats .stat-number')[2], target: 16.7, suffix: 'K' }
+        { element: document.querySelector('.hero-stats .stat-number'), target: 1534, suffix: '' },
+        { element: document.querySelectorAll('.hero-stats .stat-number')[1], target: 57, suffix: 'K' },
+        { element: document.querySelectorAll('.hero-stats .stat-number')[2], target: 17.2, suffix: 'K' }
     ];
     
     const metricCounters = [
-        { element: document.querySelector('.analytics .metric-value'), target: 1464, suffix: '' },
-        { element: document.querySelectorAll('.analytics .metric-value')[1], target: 55262, suffix: '', format: true },
-        { element: document.querySelectorAll('.analytics .metric-value')[2], target: 16710, suffix: '', format: true },
-        { element: document.querySelectorAll('.analytics .metric-value')[3], target: 1.72, suffix: '%' }
-    ];
+    { element: document.querySelector('.analytics .metric-value'), target: 1534, suffix: '' },
+    { element: document.querySelectorAll('.analytics .metric-value')[1], target: 57325, suffix: '', format: true },
+    { element: document.querySelectorAll('.analytics .metric-value')[2], target: 17196, suffix: '', format: true },
+    { element: document.querySelectorAll('.analytics .metric-value')[3], target: 1.73, suffix: '%' }
+];
     
     function animateCounter(counter) {
         if (!counter.element) return;
