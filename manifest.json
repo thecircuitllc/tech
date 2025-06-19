@@ -1,0 +1,22 @@
+{
+  "name": "Trevor Wiseman - Media Kit",
+  "short_name": "Trevor Wiseman",
+  "start_url": "/trevorw/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1a1a1a",
+  "orientation": "portrait-primary",
+  "scope": "/trevorw/",
+  "icons": [
+    {
+      "src": "trevorprofile.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "trevorprofile.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
