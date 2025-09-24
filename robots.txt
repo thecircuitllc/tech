@@ -1,4 +1,0 @@
-User-agent: *
-Disallow:
-
-Sitemap: https://thecircuit-techpulse.github.io/trevorw/sitemap.xml
