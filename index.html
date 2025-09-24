@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>True Independence Scorecard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .system-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .system-info input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        
+        .category {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background: #fdfdfd;
+        }
+        
+        .category h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .option {
+            margin: 10px 0;
+            padding: 12px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        
+        .option input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+        
+        .option.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .score-section {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .total-score {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1976d2;
+            margin: 10px 0;
+        }
+        
+        .independence-level {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 6px;
+        }
+        
+        .level-0 { background: #ffebee; color: #c62828; }
+        .level-1 { background: #fff3e0; color: #ef6c00; }
+        .level-2 { background: #fff8e1; color: #f57f17; }
+        .level-3 { background: #f3e5f5; color: #7b1fa2; }
+        .level-4 { background: #e8f5e8; color: #2e7d32; }
+        
+        .action-plan {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .action-plan h4 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .action-plan ul {
+            padding-left: 20px;
+        }
+        
+        .action-plan li {
+            margin: 8px 0;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .export-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            transition: background 0.2s ease;
+        }
+        
+        .btn:hover {
+            background: #5a67d8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛠️ True Independence Scorecard</h1>
+            <p>Evaluate your "self-hosted" infrastructure's real independence level</p>
+        </div>
+        
+        <div class="content">
+            <div class="system-info">
+                <label for="systemName"><strong>System/Service Being Evaluated:</strong></label>
+                <input type="text" id="systemName" placeholder="e.g., GitLab Self-Managed, Plex Server, Docker Enterprise">
+            </div>
+            
+            <form id="scorecardForm">
+                <div class="category">
+                    <h3>1. Authentication Independence (20 points max)</h3>
+                    <div class="option">
+                        <input type="radio" id="auth20" name="authentication" value="20">
+                        <label for="auth20"><strong>20 points:</strong> Works completely offline (local users/passwords only)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="auth10" name="authentication" value="10">
+                        <label for="auth10"><strong>10 points:</strong> Needs internet occasionally (syncs user data monthly)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="auth0" name="authentication" value="0">
+                        <label for="auth0"><strong>0 points:</strong> Requires internet to log in (like Plex did)</label>
+                    </div>
+                </div>
+                
+                <div class="category">
+                    <h3>2. Core Features Functionality (20 points max)</h3>
+                    <div class="option">
+                        <input type="radio" id="features20" name="features" value="20">
+                        <label for="features20"><strong>20 points:</strong> Everything works offline</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="features10" name="features" value="10">
+                        <label for="features10"><strong>10 points:</strong> Main functions work, some features need internet</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="features0" name="features" value="0">
+                        <label for="features0"><strong>0 points:</strong> Can't do basic tasks without internet</label>
+                    </div>
+                </div>
+                
+                <div class="category">
+                    <h3>3. Updates & License Validation (20 points max)</h3>
+                    <div class="option">
+                        <input type="radio" id="license20" name="license" value="20">
+                        <label for="license20"><strong>20 points:</strong> No license checks, manual updates only</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="license10" name="license" value="10">
+                        <label for="license10"><strong>10 points:</strong> Periodic license validation (monthly/quarterly)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="license0" name="license" value="0">
+                        <label for="license0"><strong>0 points:</strong> Daily/weekly license checks required</label>
+                    </div>
+                </div>
+                
+                <div class="category">
+                    <h3>4. Data Privacy & Sovereignty (20 points max)</h3>
+                    <div class="option">
+                        <input type="radio" id="privacy20" name="privacy" value="20">
+                        <label for="privacy20"><strong>20 points:</strong> Nothing leaves your network</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="privacy10" name="privacy" value="10">
+                        <label for="privacy10"><strong>10 points:</strong> Only sends anonymous usage stats</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="privacy0" name="privacy" value="0">
+                        <label for="privacy0"><strong>0 points:</strong> Sends user data, content metadata, or logs</label>
+                    </div>
+                </div>
+                
+                <div class="category">
+                    <h3>5. Offline Duration Capability (20 points max)</h3>
+                    <div class="option">
+                        <input type="radio" id="offline20" name="offline" value="20">
+                        <label for="offline20"><strong>20 points:</strong> Runs forever without internet</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="offline10" name="offline" value="10">
+                        <label for="offline10"><strong>10 points:</strong> Works for weeks offline</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="offline0" name="offline" value="0">
+                        <label for="offline0"><strong>0 points:</strong> Breaks within days of losing internet</label>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="score-section">
+                <h3>Your Independence Score</h3>
+                <div class="total-score" id="totalScore">0</div>
+                <div class="independence-level" id="independenceLevel">Complete the assessment above</div>
+                
+                <div id="actionPlan" class="action-plan hidden">
+                    <h4 id="actionTitle">Your Action Plan</h4>
+                    <div id="actionContent"></div>
+                </div>
+            </div>
+            
+            <div class="export-section">
+                <button class="btn" onclick="exportResults()">📊 Export Results</button>
+                <button class="btn" onclick="printResults()">🖨️ Print Report</button>
+                <button class="btn" onclick="resetForm()">🔄 Reset Form</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('scorecardForm');
+        const totalScoreElement = document.getElementById('totalScore');
+        const independenceLevelElement = document.getElementById('independenceLevel');
+        const actionPlanElement = document.getElementById('actionPlan');
+        const actionTitleElement = document.getElementById('actionTitle');
+        const actionContentElement = document.getElementById('actionContent');
+
+        const levels = {
+            level4: { min: 80, max: 100, name: "Level 4: True Independence ✅", class: "level-4" },
+            level3: { min: 60, max: 79, name: "Level 3: Cloud Optional ⚠️", class: "level-3" },
+            level2: { min: 40, max: 59, name: "Level 2: Cloud Enhanced ⚠️", class: "level-2" },
+            level1: { min: 20, max: 39, name: "Level 1: Cloud Dependent 🚨", class: "level-1" },
+            level0: { min: 0, max: 19, name: "Level 0: Cloud Hostage 💥", class: "level-0" }
+        };
+
+        const actionPlans = {
+            level4: {
+                title: "Level 4: Maintain Excellence",
+                content: `
+                    <p><strong>You're doing great! Focus on maintaining your independence:</strong></p>
+                    <ul>
+                        <li>Audit new software for hidden cloud dependencies</li>
+                        <li>Test offline resilience quarterly</li>
+                        <li>Share your architecture as internal best practice</li>
+                        <li>Monitor for dependency creep in updates</li>
+                    </ul>
+                `
+            },
+            level3: {
+                title: "Level 3: Optimization Needed",
+                content: `
+                    <p><strong>You're hybrid by design, not accident. Fine-tune your approach:</strong></p>
+                    <ul>
+                        <li>Map which features actually need internet</li>
+                        <li>Configure services for graceful offline degradation</li>
+                        <li>Set up monitoring for unexpected outbound connections</li>
+                        <li>Document your hybrid architecture decisions</li>
+                    </ul>
+                `
+            },
+            level2: {
+                title: "Level 2: Significant Improvements Needed",
+                content: `
+                    <p><strong>You have cloud enhancement opportunities:</strong></p>
+                    <ul>
+                        <li>Identify critical vs. nice-to-have cloud dependencies</li>
+                        <li>Implement local alternatives for key cloud services</li>
+                        <li>Create degraded-mode operational procedures</li>
+                        <li>Build redundant internet connections as interim solution</li>
+                    </ul>
+                `
+            },
+            level1: {
+                title: "Level 1: IMMEDIATE ACTION REQUIRED",
+                content: `
+                    <p><strong>You have a business continuity risk that needs urgent attention:</strong></p>
+                    <ul>
+                        <li><strong>This Week:</strong> Document every internet dependency</li>
+                        <li><strong>This Week:</strong> Create offline access plan for critical functions</li>
+                        <li><strong>This Week:</strong> Brief leadership on cloud dependency risk</li>
+                        <li><strong>Next 30 Days:</strong> Evaluate true self-hosted alternatives</li>
+                        <li><strong>Next 30 Days:</strong> Create "internet down" incident response plan</li>
+                    </ul>
+                `
+            },
+            level0: {
+                title: "Level 0: CRITICAL BUSINESS RISK",
+                content: `
+                    <p><strong>Your infrastructure is dangerously dependent on external services:</strong></p>
+                    <ul>
+                        <li><strong>TODAY:</strong> Brief executive leadership on business continuity risk</li>
+                        <li><strong>THIS WEEK:</strong> Implement redundant internet connections</li>
+                        <li><strong>THIS WEEK:</strong> Identify truly self-hosted alternatives</li>
+                        <li><strong>THIS MONTH:</strong> Create offline operational procedures</li>
+                        <li><strong>Next Quarter:</strong> Migrate critical systems to independent alternatives</li>
+                    </ul>
+                `
+            }
+        };
+
+        // Add event listeners to all radio buttons
+        form.addEventListener('change', calculateScore);
+
+        // Add click handlers to options for better UX
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const radio = this.querySelector('input[type="radio"]');
+                if (radio) {
+                    radio.checked = true;
+                    calculateScore();
+                    updateSelectedStyles();
+                }
+            });
+        });
+
+        function updateSelectedStyles() {
+            document.querySelectorAll('.option').forEach(option => {
+                const radio = option.querySelector('input[type="radio"]');
+                if (radio && radio.checked) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        }
+
+        function calculateScore() {
+            const formData = new FormData(form);
+            let totalScore = 0;
+            
+            for (let value of formData.values()) {
+                totalScore += parseInt(value);
+            }
+            
+            totalScoreElement.textContent = totalScore;
+            
+            // Determine level
+            let currentLevel = null;
+            for (let [key, level] of Object.entries(levels)) {
+                if (totalScore >= level.min && totalScore <= level.max) {
+                    currentLevel = level;
+                    break;
+                }
+            }
+            
+            if (currentLevel) {
+                independenceLevelElement.textContent = currentLevel.name;
+                independenceLevelElement.className = `independence-level ${currentLevel.class}`;
+                
+                // Show action plan
+                const levelKey = Object.keys(levels).find(key => levels[key] === currentLevel);
+                if (actionPlans[levelKey]) {
+                    actionTitleElement.textContent = actionPlans[levelKey].title;
+                    actionContentElement.innerHTML = actionPlans[levelKey].content;
+                    actionPlanElement.classList.remove('hidden');
+                }
+            }
+            
+            updateSelectedStyles();
+        }
+
+        function exportResults() {
+            const systemName = document.getElementById('systemName').value || 'Unknown System';
+            const score = totalScoreElement.textContent;
+            const level = independenceLevelElement.textContent;
+            
+            const results = `True Independence Scorecard Results
+System: ${systemName}
+Date: ${new Date().toLocaleDateString()}
+Total Score: ${score}/100
+Independence Level: ${level}
+
+Category Breakdown:
+Authentication: ${getSelectedValue('authentication')}/20
+Core Features: ${getSelectedValue('features')}/20
+Updates & License: ${getSelectedValue('license')}/20
+Data Privacy: ${getSelectedValue('privacy')}/20
+Offline Duration: ${getSelectedValue('offline')}/20
+
+Generated by Trevor Wiseman's Independence Scorecard
+Contact: trevor.wiseman@thecircuitllc.com`;
+
+            const blob = new Blob([results], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `independence-scorecard-${systemName.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function showResultsModal(results) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.7); z-index: 1000; display: flex; 
+                align-items: center; justify-content: center;
+            `;
+            
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: white; padding: 30px; border-radius: 12px; 
+                max-width: 600px; max-height: 80vh; overflow-y: auto;
+            `;
+            
+            content.innerHTML = `
+                <h3>Your Results (Select All & Copy)</h3>
+                <textarea readonly style="width: 100%; height: 300px; font-family: monospace; padding: 10px; margin: 15px 0;">${results}</textarea>
+                <button onclick="document.body.removeChild(this.closest('div'))" style="background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;">Close</button>
+            `;
+            
+            modal.appendChild(content);
+            document.body.appendChild(modal);
+        }
+
+        function getSelectedValue(name) {
+            const selected = document.querySelector(`input[name="${name}"]:checked`);
+            return selected ? selected.value : '0';
+        }
+
+        function printResults() {
+            window.print();
+        }
+
+        function resetForm() {
+            form.reset();
+            document.getElementById('systemName').value = '';
+            totalScoreElement.textContent = '0';
+            independenceLevelElement.textContent = 'Complete the assessment above';
+            independenceLevelElement.className = 'independence-level';
+            actionPlanElement.classList.add('hidden');
+            updateSelectedStyles();
+        }
+    </script>
+</body>
+</html>
